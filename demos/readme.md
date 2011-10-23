@@ -9,7 +9,7 @@ code/solutions/ folders (maybe using @Suggsgested's [work](https://github.com/jq
 
 ## build.js
 
-a node script, less than ~100 loc, that:
+a node script that:
 
 * lookup in content/ folders any markdown file (`md`).
 * parse each markdown content, build according codes block sections.
@@ -23,6 +23,12 @@ content)
 
 Then, if it's working correctly, one could use the according [jsfilddle
 url](http://doc.jsfiddle.net/use/github_read.html#run-in-jsfiddle) to see the demo loaded in a jsFiddle.
+
+### usage
+
+    cd demos
+    npm install
+    node build.js // or Maybe: npm start
 
 ## Demo directory structure
 
