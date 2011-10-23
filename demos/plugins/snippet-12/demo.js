@@ -1,0 +1,4 @@
+
+$('#myDiv').hilight({
+  foreground: 'blue'
+});
