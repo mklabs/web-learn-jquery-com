@@ -14,7 +14,8 @@ var fs = require('fs'),
   path = require('path'),
   util = require('util'),
   exec = require('child_process').exec,
-  findit = require('findit');
+  findit = require('findit'),
+  mime = require('mime');
 
 // very simple options parsing for exercises/solutions switch (may opt
 // for a real options parser if the config gets bigger).
@@ -78,7 +79,7 @@ mkdirp(config.fiddles, function(err) {
 
       fiddle.js = solution ? fiddle.js.replace(/exercises\/js/, 'solutions') : fiddle.js;
 
-      // files path are based upon code/ folder
+      // files path are relative to code/ folder
       var js = fs.readFileSync(path.join(config.code, fiddle.js), 'utf8'),
         html = fs.readFileSync(path.join(config.code, fiddle.html), 'utf8'),
         title = fiddle.title.toLowerCase().replace(/\s/g, '-'),
@@ -89,12 +90,30 @@ mkdirp(config.fiddles, function(err) {
           details: fiddle.details
         });
 
+      // handle CSS references, concat them to create the demo.css files,
+      // and remove CSS link tags from the demo.html
+      var css = [];
+      html = html.replace(/<link\shref="([^"]+)".+>/gm, function(w, href) {
+        var cssPath = path.join(config.code, path.dirname(fiddle.html), href);
+        css.push(fs.readFileSync(cssPath, 'utf8'));
+        return '';
+      });
+
+      // remove script import of jquery, will use jsFiddles fwk
+      html = html.replace(/<script src="libs\/jquery-1.5.0.js.+/gm, '');
+
+      // finally, deal with inline img references
+      html = html.replace(/<img\s*src="([^"]+)"/gm, function(m, src) {
+        return '<img src="b64"'.replace('b64', b64(path.join(config.code, path.dirname(fiddle.html), src)));
+      });
+
       mkdirp(fiddlePath, function() {
         if(err) return error(err);
         // Create demo.* files
         fs.writeFileSync(path.join(fiddlePath, 'demo.js'), js);
         fs.writeFileSync(path.join(fiddlePath, 'demo.html'), html);
         fs.writeFileSync(path.join(fiddlePath, 'demo.details'), details);
+        fs.writeFileSync(path.join(fiddlePath, 'demo.css'), css.join('\n\n'));
       });
     });
   });
@@ -150,5 +169,12 @@ function error(err) {
 function tmpl(s,d) {
   return s.replace(/\{([a-z]+)\}/g, function(w,m) {
     return d[m] || '';
+  });
+}
+
+function b64(path) {
+  return tmpl('data:{mediatype};base64,{hash}', {
+    mediatype: mime.lookup(path),
+    hash: fs.readFileSync(path, 'base64')
   });
 }
