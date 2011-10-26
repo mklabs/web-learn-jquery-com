@@ -1,0 +1,28 @@
+
+---
+name: exercises.mdRequest.HTML - jsFiddle/Github integration demo
+description: Selecting
+authors:
+  - Rebecca Murphey
+...
+
+
+
+
+Open the file `/exercises/index.html` in your browser. 
+Use the file `/exercises/js/sandbox.js` or work in Firebug to accomplish the following:
+
+1.	Select all of the div elements that have a class of "module".
+
+2.	Come up with three selectors that you could use to get the third item in the #myList unordered list. Which is the best to use? Why?
+
+3.	Select the label for the search input using an attribute selector.
+
+4.	Figure out how many elements on the page are hidden (hint: .length).
+
+5.	Figure out how many image elements on the page have an alt attribute.
+
+6.	Select all of the odd table rows in the table body.
+
+
+

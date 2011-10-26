@@ -1,0 +1,33 @@
+
+---
+name: event-exercises.mdRequest.HTML - jsFiddle/Github integration demo
+description: Create an Input Hint
+authors:
+  - Rebecca Murphey
+...
+
+
+
+
+Open the file `/exercises/index.html` in your browser. Use the file
+`/exercises/js/inputHint.js` or work in Firebug.  Your task is to use the text
+of the label for the search input to create "hint" text for the search input.
+The steps are as follows:
+
+1.	Set the value of the search input to the text of the label element
+
+2.	Add a class of "hint" to the search input
+
+3.	Remove the label element
+
+4.	Bind a focus event to the search input that removes the hint text and the
+    "hint" class
+
+5.	Bind a blur event to the search input that restores the hint text and
+    "hint" class if no search text was entered
+
+What other considerations might there be if you were creating this
+functionality for a real site?
+
+
+

@@ -1,0 +1,25 @@
+
+---
+name: exercises.mdRequest.HTML - jsFiddle/Github integration demo
+description: Traversing
+authors:
+  - Rebecca Murphey
+...
+
+
+
+
+Open the file `/exercises/index.html` in your browser. Use the file `/exercises/js/sandbox.js` or work in Firebug to accomplish the following:
+
+1.	Select all of the image elements on the page; log each image's alt attribute.
+
+2.	Select the search input text box, then traverse up to the form and add a class to the form.
+
+3.	Select the list item inside `#myList` that has a class of "current" and remove that class from it; add a class of "current" to the next list item.
+
+4.	Select the select element inside `#specials`; traverse your way to the submit button.
+
+5.	Select the first list item in the #slideshow element; add the class "current" to it, and then add a class of "disabled" to its sibling elements.
+
+
+
