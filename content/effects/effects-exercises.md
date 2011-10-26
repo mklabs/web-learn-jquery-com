@@ -6,7 +6,7 @@ attribution:  jQuery Fundamentals
 ---
 ## Exercises
 
-### Reveal Hidden Text - [jsFiddle](http://jsfiddle.net/gh/get/jquery/edge/mklabs/web-learn-jquery-com//tree/fiddles/code/fiddles/reveal-hidden-text)
+### Reveal Hidden Text - [jsFiddle](http://jsfiddle.net/gh/get/jquery/edge/mklabs/web-learn-jquery-com/tree/fiddles/code/fiddles/reveal-hidden-text/)
 
 Open the file `/exercises/index.html` in your browser.  Use the file
 `/exercises/js/blog.js`.  Your task is to add some interactivity to the blog
@@ -20,7 +20,7 @@ section of the page.  The spec for the feature is as follows:
 
 Hint: don't forget about the `:visible` selector!
 
-### Create Dropdown Menus - [jsFiddle](http://jsfiddle.net/gh/get/jquery/edge/mklabs/web-learn-jquery-com//tree/fiddles/code/fiddles/create-dropdown-menus)
+### Create Dropdown Menus - [jsFiddle](http://jsfiddle.net/gh/get/jquery/edge/mklabs/web-learn-jquery-com/tree/fiddles/code/fiddles/create-dropdown-menus/)
 
 Open the file `/exercises/index.html` in your browser.  Use the file
 `/exercises/js/navigation.js`.  Your task is to add dropdowns to the main
@@ -35,7 +35,7 @@ To accomplish this, use the `$.fn.hover` method to add and remove a class from
 the submenu items to control whether they're visible or hidden.  (The file at
 `/exercises/css/styles.cs`s includes the "hover" class for this purpose.)
 
-### Create a Slideshow - [jsFiddle](http://jsfiddle.net/gh/get/jquery/edge/mklabs/web-learn-jquery-com//tree/fiddles/code/fiddles/create-a-slideshow)
+### Create a Slideshow - [jsFiddle](http://jsfiddle.net/gh/get/jquery/edge/mklabs/web-learn-jquery-com/tree/fiddles/code/fiddles/create-a-slideshow/)
 
 Open the file `/exercises/index.html` in your browser.  Use the file
 `/exercises/js/slideshow.js`.  Your task is to take a plain semantic HTML page

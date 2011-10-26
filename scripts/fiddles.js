@@ -115,11 +115,17 @@ files.forEach(function(fiddles) {
         version: 'edge',
         user: 'mklabs',
         repo: 'web-learn-jquery-com',
-        tree: '/tree/fiddles/code/fiddles/' + title.replace(/\s-.+/, '').toLowerCase().replace(/\s/g, '-')
+        tree: 'tree/fiddles/code/fiddles/' + title.replace(/\s-.+/, '').toLowerCase().replace(/\s/g, '-') + '/'
       });
 
+      if(/jsFiddle/.test(match)) {
+        return match.replace(/\[[^\]]+]\(.[^)]+\)/, function() {
+          return '[jsFiddle](:url)'.replace(':url', url);
+        });
+      }
+
       console.log('  » ', url);
-      return /jsFiddle/.test(match) ? match : match + ' - [jsFiddle](:url)'.replace(':url', url);
+      return match + ' - [jsFiddle](:url)'.replace(':url', url);
     });
 
     fs.writeFileSync(fiddle.file, content);
