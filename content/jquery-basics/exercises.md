@@ -6,7 +6,7 @@ attribution:  jQuery Fundamentals
 ---
 ## Exercises
 
-### Selecting
+### Selecting - [jsFiddle](http://jsfiddle.net/gh/get/jquery/edge/mklabs/web-learn-jquery-com//tree/fiddles/code/fiddles/selecting)
 
 Open the file `/exercises/index.html` in your browser. 
 Use the file `/exercises/js/sandbox.js` or work in Firebug to accomplish the following:
@@ -23,7 +23,7 @@ Use the file `/exercises/js/sandbox.js` or work in Firebug to accomplish the fol
 
 6.	Select all of the odd table rows in the table body.
 
-### Traversing
+### Traversing - [jsFiddle](http://jsfiddle.net/gh/get/jquery/edge/mklabs/web-learn-jquery-com//tree/fiddles/code/fiddles/traversing)
 
 Open the file `/exercises/index.html` in your browser. Use the file `/exercises/js/sandbox.js` or work in Firebug to accomplish the following:
 
@@ -37,7 +37,7 @@ Open the file `/exercises/index.html` in your browser. Use the file `/exercises/
 
 5.	Select the first list item in the #slideshow element; add the class "current" to it, and then add a class of "disabled" to its sibling elements.
 
-### Manipulating
+### Manipulating - [jsFiddle](http://jsfiddle.net/gh/get/jquery/edge/mklabs/web-learn-jquery-com//tree/fiddles/code/fiddles/manipulating)
 
 Open the file `/exercises/index.html` in your browser. Use the file `/exercises/js/sandbox.js` or work in Firebug to accomplish the following:
 

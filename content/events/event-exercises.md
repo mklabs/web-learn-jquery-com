@@ -6,7 +6,7 @@ attribution:  jQuery Fundamentals
 ---
 ## Excercises
 
-###Create an Input Hint
+###Create an Input Hint - [jsFiddle](http://jsfiddle.net/gh/get/jquery/edge/mklabs/web-learn-jquery-com//tree/fiddles/code/fiddles/create-an-input-hint)
 
 Open the file `/exercises/index.html` in your browser. Use the file
 `/exercises/js/inputHint.js` or work in Firebug.  Your task is to use the text
@@ -28,7 +28,7 @@ The steps are as follows:
 What other considerations might there be if you were creating this
 functionality for a real site?
 
-### Add Tabbed Navigation
+### Add Tabbed Navigation - [jsFiddle](http://jsfiddle.net/gh/get/jquery/edge/mklabs/web-learn-jquery-com//tree/fiddles/code/fiddles/add-tabbed-navigation)
 
 Open the file `/exercises/index.html` in your browser. Use the file
 `/exercises/js/tabs.js`.  Your task is to create tabbed navigation for the two
