@@ -13,73 +13,136 @@
 var fs = require('fs'),
   path = require('path'),
   util = require('util'),
+  exec = require('child_process').exec,
   findit = require('findit');
+
+// very simple options parsing for exercises/solutions switch (may opt
+// for a real options parser if the config gets bigger).
+
+var argv = process.argv.slice(2),
+  solution = !!~['s', 'sol', 'solution'].indexOf(argv[0]);
 
 // some configs
 var config = {
+  code: path.join(__dirname, '..', 'code'),
+  fiddles: path.join(__dirname, '..', 'code', 'fiddles'),
   content: path.join(__dirname, '..', 'content'),
   output: path.join(__dirname, '..', 'content'),
+  detailsTmpl: fs.readFileSync(path.join(__dirname, 'details.tmpl'), 'utf8'),
   fiddle: 'http://jsfiddle.net/gh/get/{framework}/{version}/{user}/{repo}/{tree}'
 };
 
+console.log('About to generate or update code/fiddles folders. Configuration:');
+inspect(config);
+
+if(solution) console.log('\nGeneration using solution mode, demo.js files will include solutions to exercises.\n');
+
+
 // first step: build meta from markdown content
 // todo: move regex creation outside of iteration
-var meta = findit.findSync(config.content)
+var files = findit.findSync(config.content)
   .filter(function(file) {
     return /exercises\.md$/.test(file);
   })
   .map(function(file) {
     var content = fs.readFileSync(file, 'utf8'),
-      lines = content.split('\n'),
-      exercises = content.match(/###\s?.+/gm) || [];
+      titles = content.match(/###\s?.+\s-/gm) || content.match(/###\s?.+/gm) || [],
+      exercises = content.split(/###\s?.+/gm).slice(1);
 
-    exercises = exercises.map(function(ex) {
-      return ex.replace(/###\s?/, '').trim();
+    titles = titles.map(function(title) {
+      return title.replace(' -', '').replace(/###/, '').trim();
     });
 
-    var sections = {},
-      last = ''; 
-    lines.forEach(function(line) {
-      var parts = line.replace(/###\s?/, '');
-      if(~exercises.indexOf(line) && !sections[line]) {
-        console.log('True for: ', line);
-        last = line;
-        sections[line] = {};
-      }
+    return exercises.map(function(part, i) {
+      var html = part.match(/Open the file\s?\n?`([^`]+)`/).slice(1),
+        js = part.match(/Use the file\s?\n?`([^`]+)`/).slice(1);
 
-      if(!sections[last]) return;
-
-      var exercise = sections[last];
-      // check for Open the File/Use the File/ Your task is to pattern.
-      if(/Open the file/.test(line)) {
-        console.log('Open the file: ', line);
-      }
-
-      // check for Open the File/Use the File/ Your task is to pattern.
-      if(/Use the file/.test(line)) {
-        console.log('Use the file: ', line);
-      }
-
-      // check for Open the File/Use the File/ Your task is to pattern.
-      if(/Your task is to/.test(line)) {
-        console.log('Your task is to: ', line);
-      }
+      return {
+        file: file,
+        title: titles[i],
+        details: part,
+        html: html[0],
+        js: js[0]
+      };
     });
-
-
-    return {
-      path: file,
-      content: content,
-      exercises: exercises
-    };
   });
 
+// second step: generate fiddles from meta info
+mkdirp(config.fiddles, function(err) {
+  if(err) return error(err);
+  files.forEach(function(file) {
+    file.forEach(function(fiddle) {
+      console.log('\nCreating fiddle from file: ', fiddle.file);
+      console.log('  » with demo.js: ', fiddle.js);
+      console.log('  » with demo.html: ', fiddle.html);
 
-// inspect(meta);
+      fiddle.js = solution ? fiddle.js.replace(/exercises\/js/, 'solutions') : fiddle.js;
 
+      // files path are based upon code/ folder
+      var js = fs.readFileSync(path.join(config.code, fiddle.js), 'utf8'),
+        html = fs.readFileSync(path.join(config.code, fiddle.html), 'utf8'),
+        title = fiddle.title.toLowerCase().replace(/\s/g, '-'),
+        fiddlePath = path.join(config.fiddles, title),
+        details = tmpl(config.detailsTmpl, {
+          name: fiddle.file.split('/').slice(-1),
+          description: fiddle.title,
+          details: fiddle.details
+        });
+
+      mkdirp(fiddlePath, function() {
+        if(err) return error(err);
+        // Create demo.* files
+        fs.writeFileSync(path.join(fiddlePath, 'demo.js'), js);
+        fs.writeFileSync(path.join(fiddlePath, 'demo.html'), html);
+        fs.writeFileSync(path.join(fiddlePath, 'demo.details'), details);
+      });
+    });
+  });
+});
+
+// third step: go back in content folder and append the corresponding
+// jsFiddle link. These should match the demos prepared folders in
+// code/fiddles.
+files.forEach(function(fiddles) {
+  fiddles.forEach(function (fiddle) {
+
+    var content = fs.readFileSync(fiddle.file, 'utf8');
+
+    console.log('\nUpdate', fiddle.title, 'with the jsFiddle urls');
+    content = content.replace(/###\s?(.+)/gm, function(match, title) {
+      var url = tmpl(config.fiddle, {
+        framework: 'jquery',
+        version: 'edge',
+        user: 'mklabs',
+        repo: 'web-learn-jquery-com',
+        tree: '/tree/fiddles/code/fiddles/' + title.replace(/\s-.+/, '').toLowerCase().replace(/\s/g, '-')
+      });
+
+      console.log('  » ', url);
+      return /jsFiddle/.test(match) ? match : match + ' - [jsFiddle](:url)'.replace(':url', url);
+    });
+
+    fs.writeFileSync(fiddle.file, content);
+  });
+});
 
 
 // ### helpers
 function inspect(data) {
-  process.stdout.write(util.inspect(data, false, 2, true) + '\n');
+  process.stdout.write(util.inspect(data, false, 4, true) + '\n');
+}
+
+function mkdirp(path, cb) {
+  exec('mkdir -p ' + path, cb);
+}
+
+function error(err) {
+  console.error(err);
+  process.exit(1);
+}
+
+function tmpl(s,d) {
+  return s.replace(/\{([a-z]+)\}/g, function(w,m) {
+    return d[m] || '';
+  });
 }
